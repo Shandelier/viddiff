@@ -300,10 +300,8 @@ def run_lmm(
             debug=debug,
             fps=args_lmm.fps_gemini,
         )
-        if eval_mode != 1:
-            predictions = _reformat_malformed_json_prediction([r for r in res[0]])
-        else:
-            predictions = [r for r in res[0]]
+        # Skip reformatting for now - bypass OpenAI requirement
+        predictions = [r for r in res[0]]
 
     elif "Qwen2-VL-7B-Instruct" in args_lmm.model:
         from apis import qwen_api

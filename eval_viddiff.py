@@ -70,12 +70,32 @@ def format_predictions_closed(predictions_unmatched):
     But we want it in the same format as open eval, which is like:
         {'0': {'description': '...', 'prediction': 'a'}, '2': {'description': '...', 'prediction': 'b'}
     """
+    import re
+    
     for i in range(len(predictions_unmatched)):
         pred = predictions_unmatched[i]
-        if not isinstance(next(iter(pred.values())), dict):
+        
+        # Handle Gemini markdown-formatted JSON responses
+        if isinstance(pred, str) and pred.startswith("```json"):
+            # Extract JSON from markdown code blocks
+            json_match = re.search(r'```json\n(.*?)\n```', pred, re.DOTALL)
+            if json_match:
+                json_str = json_match.group(1)
+                try:
+                    pred = json.loads(json_str)
+                except json.JSONDecodeError:
+                    pred = {}
+            else:
+                pred = {}
+        
+        # Convert simple key-value pairs to expected format
+        if pred and not isinstance(next(iter(pred.values())), dict):
             predictions_unmatched[i] = {
                 k: {"description": "", "prediction": v} for k, v in pred.items()
             }
+        else:
+            predictions_unmatched[i] = pred
+            
     return predictions_unmatched
 
 
