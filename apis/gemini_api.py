@@ -106,7 +106,7 @@ def call_gemini(
     fps: int = 30,
 ):
     """
-    models: ["models/gemini-1.5-flash", "models/gemini-1.5-pro"]
+    models: ["models/gemini-1.5-flash", "models/gemini-1.5-pro", "models/gemini-2.5-flash"]
     """
     if isinstance(system_prompt, str):
         text: str = system_prompt + " " + text
@@ -230,6 +230,7 @@ def compute_api_call_cost(
     prices_per_million_input = {
         "models/gemini-1.5-pro": 3.50,
         "models/gemini-1.5-flash": 0.075,
+        "models/gemini-2.5-flash": 0.15,
         # "gpt-4o-mini": 0.15,
         # "gpt-4o": 5,
         # "gpt-4-turbo": 10,
@@ -239,6 +240,7 @@ def compute_api_call_cost(
     prices_per_million_output = {
         "models/gemini-1.5-pro": 10.50,
         "models/gemini-1.5-flash": 0.30,
+        "models/gemini-2.5-flash": 0.60,
         # "gpt-4o-mini": 0.075,
         # "gpt-4o": 15,
         # "gpt-4-turbo": 30,
